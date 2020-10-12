@@ -1,0 +1,37 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+psycopg2 = "*"
+pendulum = "*"
+django = "*"
+jupyter = "*"
+psycopg2-binary = "*"
+pandas = "*"
+jupyterlab = "*"
+matplotlib = "*"
+seaborn = "*"
+xeus-python = "*"
+ptvsd = "*"
+ipympl = "*"
+ciso8601 = "*"
+import-ipynb = "*"
+streamlit = "*"
+altair = "*"
+pydeck = "*"
+selenium = "*"
+webdriver-manager = "*"
+bs4 = "*"
+google-api-python-client = "*"
+google-auth-httplib2 = "*"
+google-auth-oauthlib = "*"
+gspread = "*"
+gspread-dataframe = "*"
+flake8 = "*"
+
+[requires]
+python_version = "3.7.8"
