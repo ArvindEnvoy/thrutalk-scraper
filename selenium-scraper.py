@@ -26,6 +26,7 @@ options.add_argument("--headless")
 cols = ["Status", "Email", "Phone", "Livevox Login", "Service"]
 df = pd.DataFrame(columns=cols)
 
+
 # Start chrome diver
 driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
