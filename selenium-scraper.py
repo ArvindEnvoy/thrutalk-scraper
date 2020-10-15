@@ -7,6 +7,7 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from gspread.exceptions import WorksheetNotFound
+from gspread.exceptions import SpreadsheetNotFound
 
 # Set Selenium driver options
 options = webdriver.ChromeOptions()
@@ -22,14 +23,14 @@ driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 # Define our ThruTalk Services
 services = {
     "fl_dem2020victory_distributed": "Distributed",
-    "fl_dem2020victory_east_central": "East central",
-    "fl_dem2020victory_miamidade": "Miami Dade",
-    "fl_dem2020victory_north": "North",
-    "fl_dem2020victory_south": "South",
-    "fl_dem2020victory_southwest": "Southwest",
+    "fl_dem2020victory_east_central": "Pod 3 - East Central",
+    "fl_dem2020victory_miamidade": "Pod 6 - Miami Dade",
+    "fl_dem2020victory_north": "Pod 1 - North",
+    "fl_dem2020victory_south": "Pod 4 - South",
+    "fl_dem2020victory_southwest": "Pod 5 - Southwest",
     "fl_dem2020victory_spanish": "Spanish",
     "fl_dem2020victory_team": "Team",
-    "fl_dem2020victory_west_central": "West central",
+    "fl_dem2020victory_west_central": "Pod 2 - West Central",
 }
 
 
@@ -84,7 +85,7 @@ def update_worksheet(ws, df):
         if idx == 1:
             bookmark[val] = "Time run: "
         elif idx == 2:
-            bookmark[val] = str(current_time) + " EST"
+            bookmark[val] = str(current_time.strftime("%I:%M%p")) + " EST"
         else:
             bookmark[val] = ""
 
@@ -108,7 +109,11 @@ for service in services.keys():
     service_df = get_agent_status_data(service)
 
     current_date = str((datetime.datetime.now() + datetime.timedelta(hours=-4)).date())
-    sh = gc.open(services[service])
+    try:
+        sh = gc.open(services[service])
+    except SpreadsheetNotFound:
+        print(f"{service} spreadsheet not found")
+
     try:
         ws = sh.worksheet(current_date)
     except WorksheetNotFound:
