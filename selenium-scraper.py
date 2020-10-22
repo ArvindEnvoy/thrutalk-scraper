@@ -36,11 +36,15 @@ services = {
 
 def get_agent_status_data(service):
     # url = "https://metrics.thrutalk.io/agent-status/fl_dem2020victory_distributed_callers"
+    # url = "https://metrics.thrutalk.io/agent-status/fl_dem2020victory_southwest_callers"
+    # url = "https://metrics.thrutalk.io/agent-status/fl_dem2020victory_south"
+    # url = "https://metrics.thrutalk.io/agent-status/fl_dem2020victory_west_central_callers"
+
     url = "https://metrics.thrutalk.io/agent-status/" + service + "_callers"
     driver.get(url)
 
     # Wait a sec
-    time.sleep(3)  # Or three
+    time.sleep(60)  # Or sixty
 
     # Get page source
     page = driver.page_source
