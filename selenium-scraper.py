@@ -20,6 +20,30 @@ options.add_argument("--headless")
 # Start chrome diver
 driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
+# Cookie input_relay_dial_key:"QTEyOEdDTQ.VxkL697n8UvcA6nNP8qr93NkaAuN0vP2TUu1qHsamqwT-VDXVPkqbV7Qp04.cbow7ZTzqOrSlxrf.efS922BQRGCoe1uH6fJOCI1zTYo412ZqMEuclQggw_Cg-4lAFEDwVkZxp7hmjHQ-cD3Diq4at-Fyo1MuDTOmE3SeckiJX-lPeF2_ozHkU4QvpU1jsukWzTcrRHgy6_2dt7PCgcJV-14y6eUYpybztA1MNqN4mtPxUCdpRiTx4stS6JKxsvPOawDIOVCtxQ.Dl2vZHZFjLd2GSFBLz4SMQ"
+# cookie_val = "QTEyOEdDTQ.JOUlZ_8_DvpDBe7wQp54pK58VAaPxHNM9cU2KDEtn-_ug4bYwvEYcqJTcOc.DUzEs8VZeNhA5C9t.s1D4-1_rEFNF6QVoXRZzmAYuC6CIaGsqmTUj4pBsUxPJapS-vzeytVubOIP-h29ZR5fN1XnRZJNKygMYqpl-yBUk8nYAwd0d2lq0jKN_BwmmcMG4pICI-ZDwNv6WtECtjwOyIdux73G1pMp0hBkyY0cBxbc2MmN1K_779KdHJnhwFVGJAZrZIBF_BjHY92M.pD4cAIh-ZA5qK6P_2cqTvg"
+dot_thrutalk_cookie = "QTEyOEdDTQ.JOUlZ_8_DvpDBe7wQp54pK58VAaPxHNM9cU2KDEtn-_ug4bYwvEYcqJTcOc.DUzEs8VZeNhA5C9t.s1D4-1_rEFNF6QVoXRZzmAYuC6CIaGsqmTUj4pBsUxPJapS-vzeytVubOIP-h29ZR5fN1XnRZJNKygMYqpl-yBUk8nYAwd0d2lq0jKN_BwmmcMG4pICI-ZDwNv6WtECtjwOyIdux73G1pMp0hBkyY0cBxbc2MmN1K_779KdHJnhwFVGJAZrZIBF_BjHY92M.pD4cAIh-ZA5qK6P_2cqTvg"
+
+homepage = "https://thrutalk.io/admin"
+
+driver.get(homepage)
+driver.add_cookie({"name": "_relay_dial_key", "value": dot_thrutalk_cookie})
+print("Thrutalk cookie set")
+
+driver.get(
+    "https://metrics.thrutalk.io/agent-status/fl_dem2020victory_distributed_callers"
+)
+
+driver.add_cookie({"name": "_relay_dial_key", "value": dot_thrutalk_cookie})
+print(".Thrutalk cookie set")
+driver.get(
+    "https://metrics.thrutalk.io/agent-status/fl_dem2020victory_distributed_callers"
+)
+
+# driver.get('https://metrics.thrutalk.io/agent-status/dem2020victory_co_line_1_callers')
+
+print(".Thrutalk cookie set")
+
 # Define our ThruTalk Services
 services = {
     "fl_dem2020victory_distributed": "Distributed",
@@ -41,10 +65,12 @@ def get_agent_status_data(service):
     # url = "https://metrics.thrutalk.io/agent-status/fl_dem2020victory_west_central_callers"
 
     url = "https://metrics.thrutalk.io/agent-status/" + service + "_callers"
-    driver.get(url)
 
-    # Wait a sec
-    time.sleep(60)  # Or sixty
+    driver.get(url)
+    driver.add_cookie({"name": "_relay_dial_key", "value": dot_thrutalk_cookie})
+
+    # Wait for some time
+    time.sleep(10)
 
     # Get page source
     page = driver.page_source
@@ -52,6 +78,9 @@ def get_agent_status_data(service):
 
     # Get table body
     table_body = soup.find_all("tbody")
+    # import pdb
+
+    # pdb.set_trace()
     if len(table_body) > 0:
         table_rows = table_body[0].find_all("tr")  # Get all rows
 
@@ -74,7 +103,7 @@ def get_agent_status_data(service):
             service_df["Service"] = service
         return service_df
     else:
-        raise Exception
+        return pd.DataFrame()
 
 
 def update_worksheet(ws, df):
