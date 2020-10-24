@@ -2,6 +2,7 @@ import pandas as pd
 import time
 import datetime
 import gspread as gs
+import json
 
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
@@ -136,7 +137,22 @@ def update_worksheet(ws, df):
 # Create an empty df, this is where we will populate data from the agent logs
 cols = ["Status", "Email", "Phone", "Livevox Login", "Service"]
 df = pd.DataFrame(columns=cols)
-gc = gs.service_account(filename="thrutalk-creds.json")
+data = {
+    "type": "service_account",
+    "project_id": "florida2020-292120",
+    "private_key_id": "0598be71c9e59b33a977669855b4c8e5680b28c4",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDBiQmGDUfHge29\nysBYC58zH5VddQe7SdREYXDdDP1wnamj1WBYRJuPUAUafZbI6uowma4hAt5LaTzY\nqll5eJP9pUHba7X+t3NQnIH4GEWAILAAlAjhB5MBkDQEX5Pg7Lm74O0KgGzeJUep\nd5WYxVTRCAzTTwxwS9VqfRadsdZjXlD+s9ILEAn8VLgEMiileg6zf24T9r3saEwu\nYA94CSVJCZxvDskOngSljIWxHyXrMxHgFXqNTVgTxIabfpC+TQ02TSuX5fccgCGv\nq6QVWKKLp9Yig4QMJL4LJnTgK72LaYlOn9U7pwGVczAOrhtIbv3p8ZBiE/VTcmyy\ntey5WfY/AgMBAAECggEABgmc4vIyHY63mHalRnniVwlysu4uNhEJDrMNfs/jbip0\n+tfyv/4v7iocZqWpWQ4/DRIWRRBeV/LqA4ZY8TmqQDzyD4LONCqL7eVcBp3XOTaL\n1xDHMCH425EglkxXBCrOZoaPTocQHmQCVs6Uu6XYTgcWw1bReAVdnItXc8by/bmL\nAvsqyxbXzQEZb1yv13kPnCT4INU4mttbJp1ThciZvUatbFgiKlr0gCt7s6LNKepU\nsE01cjtf6rHKwssJiqfBkbeXtuDN9rMY0YL8F0FEufDyQuLET+ZjE8YKMqwsUHtP\npFn5IdLZ1w2Fiqb7+2ccB4zPi33KV32txcU6EILq6QKBgQD9dALYFEnDgMstPq1A\nCUcr/HiaNAQpTGCq6+192WDs6G4KBHj1yQ6rcrWfxHnaC+8+xRGkcWhS2PQEdJpG\n5FtNiVbTsVDh5VAWNNADtHI/23X2wsd4hSEY+RjSfS2iP/efEsWkgEUumacJjh2D\n8g3YtkjGnUVEurNoDo7Fw2q7+QKBgQDDeuRXp49B7m8BGoYyp3rvlhXhvFfS6Mi1\nfDyVnOOBlJT5JtZfMyNumDPCqWfHXluaLd9eOVeinXT7iUXJy8IDm4mKfaaR7Z3q\n+SkvB6PWLAKELTUKIRCrf7nepo/Lc49zMpJx3mGtro7Ioe5cEA9zoN2t3u9kPlbO\nniSLGh+h9wKBgQC7HuhuoWPoO/FFQS3lxjPOjMJ5joe3+dSwvCiFrnS508xSBwVK\n6Rq0h6cCAqu3yPHkVNh2oOfVqqlVlMTGLBgggZIiDppZfNSI4IrnAVUMQjmwahOc\nriVGa7ngxVxomnN19QUIM09gXT6OdmbiIFYKtmG6iSg32uNTotPTvDfT+QKBgQC6\nxHfWp+lf/Qdh7o25Z/s1XhiaDPF8OZ1KiOD5sWRNMkEDq++2FY4M5K7PljvpaGXs\n8VcxF2h7niVfDtD29Q7xk3HeOB8l3fm7v0NyA8Ktpm7hCrBadS0QLoDQEiPhJxAv\n6GmzEd4Rq24Qk2bB3zZkK5ahwRbImCcoUkBoBxWiEQKBgBpUljBwFKuopb3ODmBl\n6memZZ1DxeDJuoxCUT5jXj4YkWXLsLcCtyWRBDNMsXhIQrSeSLi7JXye1E3wn+Wd\nAagGuqeC1jxmznoMKkBlUCMCIfUtFaymn6Hu1Z4G8XczZivnHoMOlJB+PMDsZMm9\nAYgjZ1GlwCSztFbP5eBOhg/j\n-----END PRIVATE KEY-----\n",
+    "client_email": "thrutalk-app@florida2020-292120.iam.gserviceaccount.com",
+    "client_id": "106026255969120639407",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/thrutalk-app%40florida2020-292120.iam.gserviceaccount.com",
+}
+with open("thrutalk-test.json", "w+") as outfile:
+    json.dump(data, outfile)
+
+gc = gs.service_account(filename="thrutalk-test.json")
 
 for service in services.keys():
     service_df = get_agent_status_data(service)
