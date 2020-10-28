@@ -1,9 +1,23 @@
-import pandas as pd
 import time
 import datetime
-import gspread as gs
+import subprocess
+import sys
 import json
 
+
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+
+install("pandas")
+install("gspread")
+install("selenium")
+install("webdriver_manager")
+install("bs4")
+install("chromedriver_installer")
+
+import pandas as pd
+import gspread as gs
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
