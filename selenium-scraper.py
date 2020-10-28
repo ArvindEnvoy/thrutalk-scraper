@@ -14,7 +14,7 @@ install("gspread")
 install("selenium")
 install("webdriver_manager")
 install("bs4")
-install("chromedriver_installer")
+# install("chromedriver_installer")
 
 import pandas as pd
 import gspread as gs
