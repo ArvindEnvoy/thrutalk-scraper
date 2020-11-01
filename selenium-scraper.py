@@ -123,9 +123,7 @@ def get_agent_status_data(service):
 
 def update_worksheet(ws, df):
 
-    current_time = datetime.datetime.now().replace(microsecond=0) + datetime.timedelta(
-        hours=-4
-    )
+    current_time = datetime.datetime.utcnow().replace(microsecond=0) + datetime.timedelta(hours=-5)
     columns = df.columns.to_list()
     bookmark = {}
 
